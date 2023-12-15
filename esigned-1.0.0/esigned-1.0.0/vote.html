@@ -1,329 +1,305 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <!-- Mobile Metas -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
 
-    <title>Esigned</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- slider stylesheet -->
-    <!-- slider stylesheet -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-    />
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
 
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <title>Hawker Wars</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- slider stylesheet -->
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 
-    <!-- fonts style -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,700&display=swap"
+    rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
 
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyAvxvepqtZMLwYgQ1gUFMzo1zM0FgxpGDU",
-        authDomain: "asg2-1cdee.firebaseapp.com",
-        databaseURL:
-          "https://asg2-1cdee-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "asg2-1cdee",
-        storageBucket: "asg2-1cdee.appspot.com",
-        messagingSenderId: "649820873310",
-        appId: "1:649820873310:web:5d3a79c0958cc0c494cacf",
-      };
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
 
-      import {
-        getDatabase,
-        ref,
-        set,
-        get,
-        onValue,
-        push,
-        child,
-        update,
-        remove,
-      } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-      import {
-        getAuth,
-        createUserWithEmailAndPassword,
-        signInWithEmailAndPassword,
-        onAuthStateChanged,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAvxvepqtZMLwYgQ1gUFMzo1zM0FgxpGDU",
+      authDomain: "asg2-1cdee.firebaseapp.com",
+      databaseURL:
+        "https://asg2-1cdee-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "asg2-1cdee",
+      storageBucket: "asg2-1cdee.appspot.com",
+      messagingSenderId: "649820873310",
+      appId: "1:649820873310:web:5d3a79c0958cc0c494cacf",
+    };
 
-      const app = initializeApp(firebaseConfig);
-      const db = getDatabase();
-      const auth = getAuth();
-      const votesRef = ref(db, "votes");
+    import {
+      getDatabase,
+      ref,
+      set,
+      get,
+      onValue,
+      push,
+      child,
+      update,
+      remove,
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut,
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-      var birdVote = document
-        .getElementById("birdVote")
-        .addEventListener("click", sendVoteBird);
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase();
+    const auth = getAuth();
+    const votesRef = ref(db, "votes");
 
-      function sendVoteBird() {
-        console.log("vote bird");
+    var birdVote = document
+      .getElementById("birdVote")
+      .addEventListener("click", sendVoteBird);
 
-        get(ref(db, "votes/bird")).then((snapshot) => {
-          const currentCount = snapshot.val().voteForBird || 0;
-          const updatedCount = currentCount + 1;
+    function sendVoteBird() {
+      console.log("vote bird");
 
-          // Set the updated value
-          set(ref(db, "votes/bird"), { voteForBird: updatedCount });
-          getDailyActiveUsers();
-        });
-      }
-      var tissueVote = document
-        .getElementById("tissueVote")
-        .addEventListener("click", sendVoteTissue);
+      get(ref(db, "votes/bird")).then((snapshot) => {
+        const currentCount = snapshot.val().voteForBird || 0;
+        const updatedCount = currentCount + 1;
 
-      function sendVoteTissue() {
-        get(ref(db, "votes/tissue")).then((snapshot) => {
-          const currentCount = snapshot.val().voteForTissue || 0;
-          const updatedCount = currentCount + 1;
-
-          // Set the updated value
-          set(ref(db, "votes/tissue"), { voteForTissue: updatedCount });
-          getDailyActiveUsers();
-        });
-      }
-
-      var quizVote = document
-        .getElementById("quizVote")
-        .addEventListener("click", sendVoteQuiz);
-
-      function sendVoteQuiz() {
-        get(ref(db, "votes/quiz")).then((snapshot) => {
-          const currentCount = snapshot.val().voteForQuiz || 0;
-          const updatedCount = currentCount + 1;
-
-          // Set the updated value
-          set(ref(db, "votes/quiz"), { voteForQuiz: updatedCount });
-          getDailyActiveUsers();
-        });
-      }
-      var orderVote = document
-        .getElementById("orderVote")
-        .addEventListener("click", sendVoteOrder);
-
-      function sendVoteOrder() {
-        get(ref(db, "votes/order")).then((snapshot) => {
-          const currentCount = snapshot.val().voteForOrder || 0;
-          const updatedCount = currentCount + 1;
-
-          // Set the updated value
-          set(ref(db, "votes/order"), { voteForOrder: updatedCount });
-          getDailyActiveUsers();
-        });
-      }
-      const myChartCanvas = document.getElementById("myPieChart");
-      const myChartContext = myChartCanvas.getContext("2d");
-      const myChart = new Chart(myChartContext, {
-        type: "pie",
-        data: {
-          labels: ["BirdGame", "OrderSection", "Quiz", "ChopeGame"],
-          datasets: [
-            {
-              label: "# of Votes",
-              data: [0, 0, 0, 0],
-              borderWidth: 1,
-              backgroundColor: ["blue", "green", "red", "yellow"],
-            },
-          ],
-        },
+        // Set the updated value
+        set(ref(db, "votes/bird"), { voteForBird: updatedCount });
+        getDailyActiveUsers();
       });
+    }
+    var tissueVote = document
+      .getElementById("tissueVote")
+      .addEventListener("click", sendVoteTissue);
 
-      function updateChart(votes, snapshot) {
-        myChart.data.labels = votes;
-        myChart.data.datasets[0].data = votes.map((vote) => {
-          const voteKey = `voteFor${
-            vote.charAt(0).toUpperCase() + vote.slice(1)
+    function sendVoteTissue() {
+      get(ref(db, "votes/tissue")).then((snapshot) => {
+        const currentCount = snapshot.val().voteForTissue || 0;
+        const updatedCount = currentCount + 1;
+
+        // Set the updated value
+        set(ref(db, "votes/tissue"), { voteForTissue: updatedCount });
+        getDailyActiveUsers();
+      });
+    }
+
+    var quizVote = document
+      .getElementById("quizVote")
+      .addEventListener("click", sendVoteQuiz);
+
+    function sendVoteQuiz() {
+      get(ref(db, "votes/quiz")).then((snapshot) => {
+        const currentCount = snapshot.val().voteForQuiz || 0;
+        const updatedCount = currentCount + 1;
+
+        // Set the updated value
+        set(ref(db, "votes/quiz"), { voteForQuiz: updatedCount });
+        getDailyActiveUsers();
+      });
+    }
+    var orderVote = document
+      .getElementById("orderVote")
+      .addEventListener("click", sendVoteOrder);
+
+    function sendVoteOrder() {
+      get(ref(db, "votes/order")).then((snapshot) => {
+        const currentCount = snapshot.val().voteForOrder || 0;
+        const updatedCount = currentCount + 1;
+
+        // Set the updated value
+        set(ref(db, "votes/order"), { voteForOrder: updatedCount });
+        getDailyActiveUsers();
+      });
+    }
+    const myChartCanvas = document.getElementById("myPieChart");
+    const myChartContext = myChartCanvas.getContext("2d");
+    const myChart = new Chart(myChartContext, {
+      type: "pie",
+      data: {
+        labels: ["BirdGame", "OrderSection", "Quiz", "ChopeGame"],
+        datasets: [
+          {
+            label: "# of Votes",
+            data: [0, 0, 0, 0],
+            borderWidth: 1,
+            backgroundColor: ["blue", "green", "red", "yellow"],
+          },
+        ],
+      },
+    });
+
+    function updateChart(votes, snapshot) {
+      myChart.data.labels = votes;
+      myChart.data.datasets[0].data = votes.map((vote) => {
+        const voteKey = `voteFor${vote.charAt(0).toUpperCase() + vote.slice(1)
           }`;
-          return snapshot.val()[vote][voteKey];
-        });
-        myChart.update();
-      }
-      function getDailyActiveUsers() {
-        console.log("getting daily active users");
+        return snapshot.val()[vote][voteKey];
+      });
+      myChart.update();
+    }
+    function getDailyActiveUsers() {
+      console.log("getting daily active users");
 
-        get(votesRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            try {
-              let colors = [];
+      get(votesRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          try {
+            let colors = [];
 
-              snapshot.forEach((childSnapshot) => {
-                colors.push(childSnapshot.key);
-              });
+            snapshot.forEach((childSnapshot) => {
+              colors.push(childSnapshot.key);
+            });
 
-              updateChart(colors, snapshot);
-              console.log(colors);
-            } catch (error) {
-              console.log(error);
-            }
-          } else {
-            console.log("snapshot does not exist");
+            updateChart(colors, snapshot);
+            console.log(colors);
+          } catch (error) {
+            console.log(error);
           }
-        });
-      }
-      getDailyActiveUsers();
-    </script>
-  </head>
-  <style>
-    th,
-    td {
-      padding: 12px;
+        } else {
+          console.log("snapshot does not exist");
+        }
+      });
     }
+    getDailyActiveUsers();
+  </script>
+</head>
+<style>
+  th,
+  td {
+    padding: 12px;
+  }
 
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
 
-    th {
-      background-color: black;
-      color: white;
-      width: 86%;
-      padding: 25px;
-      text-align: left;
-    }
-  </style>
-  <body class="sub_page">
-    <div class="hero_area">
-      <!-- header section strats -->
-      <header class="header_section">
-        <div class="container-fluid">
-          <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
-            <a class="navbar-brand" href="index.html">
-              <span> Esigned </span>
-            </a>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
+  th {
+    background-color: black;
+    color: white;
+    width: 86%;
+    padding: 25px;
+    text-align: left;
+  }
+</style>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <div
-                class="d-flex ml-auto flex-column flex-lg-row align-items-center"
-              >
-                <ul class="navbar-nav">
-                  <li class="nav-item active">
-                    <a class="nav-link" href="index.html"
-                      >Home <span class="sr-only">(current)</span></a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="about.html"> About </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="do.html"> What we do </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="portfolio.html"> Portfolio </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact us</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="vote.html">Vote</a>
-                  </li>
-                </ul>
-                <div class="user_option">
-                  <a href="">
-                    <img src="images/user.png" alt="" />
-                  </a>
-                  <form
-                    class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0"
-                  >
-                    <button
-                      class="btn my-2 my-sm-0 nav_search-btn"
-                      type="submit"
-                    ></button>
-                  </form>
-                </div>
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+          <a class="navbar-brand" href="index.html">
+            <span> Hawker Wars </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html"> About </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="do.html"> What we do </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="portfolio.html"> Portfolio </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="contact.html">Contact us</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="vote.html">Vote</a>
+                </li>
+              </ul>
+              <div class="user_option">
+                <a href="">
+                  <img src="images/user.png" alt="" />
+                </a>
+                <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
+                  <button class="btn my-2 my-sm-0 nav_search-btn" type="submit"></button>
+                </form>
               </div>
             </div>
-          </nav>
-        </div>
-      </header>
-      <!-- end header section -->
-    </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
 
-    <!-- contact section -->
+  <!-- contact section -->
 
-    <section class="contact_section layout_padding">
-      <div class="container">
-        <div class="heading_container">
-          <h1>Vote on what was your favourite interaction!</h1>
-        </div>
+  <section class="contact_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h1>Vote on what was your favourite interaction!</h1>
+      </div>
+      <div class="">
         <div class="">
-          <div class="">
-            <div class="row">
-              <div class="col-md-9 mx-auto">
-                <canvas id="myPieChart" width="400" height="400"></canvas>
+          <div class="row">
+            <div class="col-md-9 mx-auto">
+              <canvas id="myPieChart" width="400" height="400"></canvas>
 
-                <!-- Voting buttons -->
-                <button id="birdVote">Vote for the bird game</button>
-                <button id="tissueVote">Vote for the chope game</button>
-                <button id="quizVote">Vote for the quiz</button>
-                <button id="orderVote">Vote for the order section</button>
-              </div>
+              <!-- Voting buttons -->
+              <button id="birdVote">Vote for the bird game</button>
+              <button id="tissueVote">Vote for the chope game</button>
+              <button id="quizVote">Vote for the quiz</button>
+              <button id="orderVote">Vote for the order section</button>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- end contact section -->
+  <!-- end contact section -->
 
-    <!-- end info_section -->
+  <!-- end info_section -->
 
-    <!-- footer section -->
-    <section class="container-fluid footer_section">
-      <p>
-        &copy; 2020 All Rights Reserved By
-        <a href="https://html.design/">Free Html Templates</a>
-        Distrubuted By <a href="https://themewagon.com">ThemeWagon</a>
-      </p>
-    </section>
-    <!-- footer section -->
+  <!-- footer section -->
+  <section class="container-fluid footer_section">
+    <p>
+      &copy; 2020 All Rights Reserved By
+      <a href="https://html.design/">Free Html Templates</a>
+      Distrubuted By <a href="https://themewagon.com">ThemeWagon</a>
+    </p>
+  </section>
+  <!-- footer section -->
 
-    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
-    ></script>
-    <!-- owl carousel script 
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <!-- owl carousel script 
     -->
 
-    <!-- end owl carousel script -->
-  </body>
+  <!-- end owl carousel script -->
+</body>
+
 </html>
