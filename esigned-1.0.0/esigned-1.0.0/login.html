@@ -29,6 +29,75 @@
     <link href="css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="css/responsive.css" rel="stylesheet" />
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAvxvepqtZMLwYgQ1gUFMzo1zM0FgxpGDU",
+            authDomain: "asg2-1cdee.firebaseapp.com",
+            databaseURL:
+                "https://asg2-1cdee-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "asg2-1cdee",
+            storageBucket: "asg2-1cdee.appspot.com",
+            messagingSenderId: "649820873310",
+            appId: "1:649820873310:web:5d3a79c0958cc0c494cacf",
+        };
+
+        import {
+            getDatabase,
+            ref,
+            set,
+            get,
+            onValue,
+            push,
+            child,
+            update,
+            remove,
+        } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut,
+        } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase();
+        const auth = getAuth();
+        const playerRef = ref(db, "players");
+        console.log("Auth working");
+        var loginBtn = document
+            .getElementById("btn-login")
+            .addEventListener("click", frmLoginUser);
+
+        frmLoginUser.addEventListener("submit", function (e) {
+            e.preventDefault();
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            createUser(email, password);
+            console.log("email" + email + "password" + password);
+        });
+        function createUser(email, password) {
+            console.log("creating the user");
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    //signedin
+                    const user = userCredential.user;
+                    console.log("created user ... " + JSON.stringify(userCredential));
+                    console.log("User is now signed in ");
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(`ErrorCode: ${errorCode} -> Message: ${errorMessage}`);
+                });
+        }
+    </script>
 </head>
 
 <body class="sub_page">
@@ -97,8 +166,7 @@
                     <div class="row">
                         <div class="col-md-9 mx-auto">
                             <div class="contact-form">
-                                <form id="frmCreateUser">
-
+                                <form id="frmLoginUser">
                                     <div>
                                         <input type="email" id="email" placeholder="Email Address" />
                                     </div>
@@ -106,7 +174,7 @@
                                         <input type="text" id="password" placeholder="Password" />
                                     </div>
 
-                                    <button id="btn-read">Log In</button>
+                                    <button id="btn-login">Log In</button>
                                 </form>
                             </div>
                             <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
@@ -116,8 +184,6 @@
             </div>
         </div>
     </section>
-
-    <script type="module" src="firebase.js"></script>
 
     <!-- end contact section -->
 
