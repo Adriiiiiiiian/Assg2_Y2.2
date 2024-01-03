@@ -14,7 +14,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Hawker Wars</title>
+    <title>Leaderboardmenu</title>
 
     <!-- slider stylesheet -->
     <!-- slider stylesheet -->
@@ -36,6 +36,7 @@
     <link href="css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="css/responsive.css" rel="stylesheet" />
+
     <script type="module">
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -76,37 +77,59 @@
       const app = initializeApp(firebaseConfig);
       const db = getDatabase();
       const auth = getAuth();
-      const playerRef = ref(db, "players");
-      console.log("Auth working");
-      var loginBtn = document
-        .getElementById("btn-login")
-        .addEventListener("click", frmLoginUser);
+      const feedbackRef = ref(db, "feedback");
 
-      frmLoginUser.addEventListener("submit", function (e) {
-        e.preventDefault();
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
-        createUser(email, password);
-        console.log("email" + email + "password" + password);
-      });
-      function createUser(email, password) {
-        console.log("creating the user");
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            //signedin
-            const user = userCredential.user;
-            console.log("created user ... " + JSON.stringify(userCredential));
-            console.log("User is now signed in ");
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(`ErrorCode: ${errorCode} -> Message: ${errorMessage}`);
-          });
+      function sendFeedback() {
+        const nameInput = document.getElementById("contactNameValue");
+        const emailInput = document.getElementById("contactEmailValue");
+        const messageValue = document.getElementById("inquiryValue");
+
+        const fullName = nameInput.value;
+        const email = emailInput.value;
+        const message = messageValue.value;
+
+        var question = {
+          name: fullName,
+          email: email,
+          inquiry: message,
+        };
+        console.log(question);
+        push(ref(db, `feedback`), question);
+
+        nameInput.value = "";
+        emailInput.value = "";
+        messageValue.value = "";
+        contactAlert(); // Add parentheses to call the function
       }
+
+      function contactAlert() {
+        alert("Your inquiry has been sent in, thank you.");
+      }
+
+      var contactBtn = document
+        .getElementById("contactBtn")
+        .addEventListener("click", sendFeedback);
     </script>
   </head>
-
+  <style>
+    button {
+      border: none;
+      outline: none;
+      padding: 12px 50px;
+      text-transform: uppercase;
+      margin-top: 25px;
+      background-color: #fec913;
+      color: #fff;
+      border-radius: 30px;
+      text-align: center;
+      margin-right: 10px;
+    }
+    
+    .button-container {
+        display: flex;
+        justify-content: center;
+    }
+  </style>
   <body class="sub_page">
     <div class="hero_area">
       <!-- header section strats -->
@@ -114,7 +137,7 @@
         <div class="container-fluid">
           <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
             <a class="navbar-brand" href="index.html">
-              <span> Hawker Wars </span>
+              <span> Esigned </span>
             </a>
             <button
               class="navbar-toggler"
@@ -145,9 +168,7 @@
                     <a class="nav-link" href="message.html"> Messages </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="leaderboardmenu.html">
-                      Leaderboards
-                    </a>
+                    <a class="nav-link" href="leaderboardmenu.html"> Leaderboards </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="contact.html">Contact us</a>
@@ -157,7 +178,7 @@
                   </li>
                 </ul>
                 <div class="user_option">
-                  <a href="login.html">
+                  <a href="">
                     <img src="images/user.png" alt="" />
                   </a>
                   <form
@@ -182,34 +203,13 @@
     <section class="contact_section layout_padding">
       <div class="container">
         <div class="heading_container">
-          <h2>Log In</h2>
+          <h2>Check your scores</h2>
         </div>
-        <div class="">
-          <div class="">
-            <div class="row">
-              <div class="col-md-9 mx-auto">
-                <div class="contact-form">
-                  <form id="frmLoginUser">
-                    <div>
-                      <input
-                        type="email"
-                        id="email"
-                        placeholder="Email Address"
-                      />
-                    </div>
-                    <div>
-                      <input type="text" id="password" placeholder="Password" />
-                    </div>
+        <div class="button-container">
+            <a href="leaderboardchope.html"> <button>Chope game</button></a>
+            <a href="leaderboardbird.html"> <button>Bird game</button></a>
+        </div>
 
-                    <button id="btn-login">Log In</button>
-                  </form>
-                </div>
-                <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- end contact section -->
@@ -233,7 +233,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
     ></script>
     <!-- owl carousel script 
-      -->
+    -->
 
     <!-- end owl carousel script -->
   </body>

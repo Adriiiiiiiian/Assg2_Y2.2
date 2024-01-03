@@ -14,7 +14,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Hawker Wars</title>
+    <title>Leaderboardbird</title>
 
     <!-- slider stylesheet -->
     <!-- slider stylesheet -->
@@ -38,20 +38,20 @@
     <link href="css/responsive.css" rel="stylesheet" />
     <script type="module">
       // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
       // TODO: Add SDKs for Firebase products that you want to use
       // https://firebase.google.com/docs/web/setup#available-libraries
 
       // Your web app's Firebase configuration
       const firebaseConfig = {
-        apiKey: "AIzaSyAvxvepqtZMLwYgQ1gUFMzo1zM0FgxpGDU",
-        authDomain: "asg2-1cdee.firebaseapp.com",
+        apiKey: "AIzaSyCLDmrwMX7Sl8-Fu1ypkXy3sDYTEK_UVzc",
+        authDomain: "assignment1-344f4.firebaseapp.com",
         databaseURL:
-          "https://asg2-1cdee-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "asg2-1cdee",
-        storageBucket: "asg2-1cdee.appspot.com",
-        messagingSenderId: "649820873310",
-        appId: "1:649820873310:web:5d3a79c0958cc0c494cacf",
+          "https://assignment1-344f4-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "assignment1-344f4",
+        storageBucket: "assignment1-344f4.appspot.com",
+        messagingSenderId: "221950801444",
+        appId: "1:221950801444:web:d46a32c6e41b5bd1b54ab1",
       };
 
       import {
@@ -64,49 +64,75 @@
         child,
         update,
         remove,
-      } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+      } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
       import {
         getAuth,
         createUserWithEmailAndPassword,
         signInWithEmailAndPassword,
         onAuthStateChanged,
         signOut,
-      } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+      } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
       const app = initializeApp(firebaseConfig);
       const db = getDatabase();
-      const auth = getAuth();
       const playerRef = ref(db, "players");
-      console.log("Auth working");
-      var loginBtn = document
-        .getElementById("btn-login")
-        .addEventListener("click", frmLoginUser);
+      const auth = getAuth();
 
-      frmLoginUser.addEventListener("submit", function (e) {
-        e.preventDefault();
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
-        createUser(email, password);
-        console.log("email" + email + "password" + password);
-      });
-      function createUser(email, password) {
-        console.log("creating the user");
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            //signedin
-            const user = userCredential.user;
-            console.log("created user ... " + JSON.stringify(userCredential));
-            console.log("User is now signed in ");
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(`ErrorCode: ${errorCode} -> Message: ${errorMessage}`);
-          });
+   
+
+      function getPlayerData() {
+        get(playerRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            try {
+              var content = "";
+              const sortedPlayers = Object.entries(snapshot.val()).sort(
+                //converts the snap shot into an array, it then sorts it using the sort()
+                (a, b) => b[1].HighScore - a[1].HighScore //extracts the second value, the high score, and will move the element position in the array based on the difference
+              );
+              console.log(sortedPlayers);
+              sortedPlayers.forEach(([key, player], index) => {
+                content += `<tr>
+              <td>${index + 1}</td>
+              <td>${player.displayName}</td>
+              <td>${player.HighScore}</td>
+            </tr>`;
+              });
+
+              let table = document.getElementById("table-data");
+              table.innerHTML = content;
+            } catch (error) {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              console.log(error);
+            }
+          }
+        });
       }
+      //getPlayerData();
+      //credits:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+      //https://www.w3schools.com/js/js_array_sort.asp
+      //https://stackoverflow.com/questions/47858518/highscore-in-local-storage-javascript
+      getPlayerData();
     </script>
   </head>
+  <style>
+    th,
+    td {
+      padding: 12px;
+    }
 
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    th {
+      background-color: black;
+      color: white;
+      width: 86%;
+      padding: 25px;
+      text-align: left;
+    }
+  </style>
   <body class="sub_page">
     <div class="hero_area">
       <!-- header section strats -->
@@ -114,7 +140,7 @@
         <div class="container-fluid">
           <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
             <a class="navbar-brand" href="index.html">
-              <span> Hawker Wars </span>
+              <span> Esigned </span>
             </a>
             <button
               class="navbar-toggler"
@@ -145,9 +171,7 @@
                     <a class="nav-link" href="message.html"> Messages </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="leaderboardmenu.html">
-                      Leaderboards
-                    </a>
+                    <a class="nav-link" href="leaderboardmenu.html"> Leaderboards </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="contact.html">Contact us</a>
@@ -157,7 +181,7 @@
                   </li>
                 </ul>
                 <div class="user_option">
-                  <a href="login.html">
+                  <a href="">
                     <img src="images/user.png" alt="" />
                   </a>
                   <form
@@ -182,34 +206,19 @@
     <section class="contact_section layout_padding">
       <div class="container">
         <div class="heading_container">
-          <h2>Log In</h2>
+          <h2>Leaderboard bird game</h2>
         </div>
-        <div class="">
-          <div class="">
-            <div class="row">
-              <div class="col-md-9 mx-auto">
-                <div class="contact-form">
-                  <form id="frmLoginUser">
-                    <div>
-                      <input
-                        type="email"
-                        id="email"
-                        placeholder="Email Address"
-                      />
-                    </div>
-                    <div>
-                      <input type="text" id="password" placeholder="Password" />
-                    </div>
-
-                    <button id="btn-login">Log In</button>
-                  </form>
-                </div>
-                <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+ 
+        <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>HighScore</th>
+              </tr>
+            </thead>
+            <tbody id="table-data"></tbody>
+        </table>
     </section>
 
     <!-- end contact section -->
@@ -233,7 +242,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
     ></script>
     <!-- owl carousel script 
-      -->
+    -->
 
     <!-- end owl carousel script -->
   </body>
